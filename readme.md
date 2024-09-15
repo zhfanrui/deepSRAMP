@@ -25,3 +25,4 @@ conda env create -f env.yml
 
 
 
+rsync -av --exclude *.out --exclude *.data --exclude *.metrics --exclude *.model --exclude *.gz --exclude *.pk --exclude model/ --exclude whistle/ --exclude ablation/ --exclude fig/ --exclude *.ipynb_checkpoints/ ../../deepsramp/ .
