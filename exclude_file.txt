@@ -1,6 +1,7 @@
 *.out
 *.data
 *.pk
+*.metrics
 data/*.gz
 whistle/
 ablation/
