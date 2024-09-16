@@ -15,29 +15,45 @@ SRAMP (http://www.cuilab.cn/sramp) is a popular mammalian m6A site predictor we 
 
 ## Installation
 
-1. Install `conda`;
-2. Clone this repo;
-3. Install `deepSRAMP` through either
-    a. 
-    A.
-   ```sh
-pip install deepsramp
-   ```
-   B.
+1. Install `conda` and create a virtual enviroument named `sramp` with `python` installed;
 ```sh
-conda create -y -n sramp ipykernel 
+conda create -y -n sramp python 
 conda activate sramp
-pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple torch pandas scikit-learn regex joblib tqdm matplotlib seaborn shap
 ```
-
-    B. 
+2. Install `deepSRAMP` through
 ```sh
-conda env create -f env.yml
+pip install deepsramp
 ```
-5. Download GTF and FASTA files through `sh download.sh`;
+3. Clone this repo, especially for `data` and `model` folder;
+4. Download GTF and FASTA files through `sh download.sh`;
+
+## Usage
 
 
+## Citation
 
+paper
+
+## Tutorials
+
+The reproduction of figures in the paper can be found in `ipynb` files.
+- [Figure 1](fig1.ipynb)
+- [Figure 2](fig2.ipynb)
+- [Figure 3](fig3.ipynb)
+- [Figure 4](fig4.ipynb)
+
+## Performance
+
+### Cross Validation
+![](fig/fig1b_roc_mature.svg)
+![](fig/fig1b_prc_mature.svg)
+
+### Test on YTHDF1/2
+![](fig/fig2_ythdf_roc.svg)
+![](fig/fig2_ythdf_prc.svg)
+
+### Test on m6Aatlas
+![](fig/atlas2_human_prc.svg)
 
 
 
