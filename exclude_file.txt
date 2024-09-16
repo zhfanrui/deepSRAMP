@@ -1,0 +1,13 @@
+*.out
+*.data
+*.pk
+data/*.gz
+whistle/
+ablation/
+*.ipynb_checkpoints/
+*__pycache__/
+dist/
+build/
+deepsramp.egg-info/
+
+test_res
