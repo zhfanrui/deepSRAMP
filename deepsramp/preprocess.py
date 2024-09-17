@@ -7,23 +7,25 @@ from joblib import Parallel, delayed
 import gzip
 from . import utils
 
-def read_seq(filename):
+def _read_seq(f, nfunc=lambda x: x[1:].split(' ')[0].strip().split('.')[0]):
     seqs = {}
     name = ""
     seq = ""
-    
+    for i in tqdm(f):
+        i = i.decode()
+        if i.startswith(">"):
+            if name: seqs[name] = seq
+            name = nfunc(i)
+            seq = ""
+        else:
+            seq += i.strip().upper()
+    seqs[name] = seq
+    return seqs
+
+def read_seq(filename):
     openfunc = gzip.open if filename.endswith('gz') else open
     with openfunc(filename, 'rb') as f:
-        for i in tqdm(f):
-            i = i.decode()
-            if i.startswith(">"):
-                seqs[name] = seq
-                name = i[1:].split(' ')[0].strip().split('.')[0]
-                seq = ""
-            else:
-                seq += i.strip().upper()
-    seqs[name] = seq
-    del seqs['']
+        seqs = _read_seq(f)
     return seqs
 
 def read_gtf(filename):

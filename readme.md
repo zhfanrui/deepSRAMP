@@ -27,6 +27,30 @@ pip install deepsramp
 3. Clone this repo, especially for `data` and `model` folder;
 4. Download GTF and FASTA files through `sh download.sh`;
 
+### Setup for local 
+
+## Trained Models
+
+Model names follow the rule of `{mode}_{half_window_size}_{target}_{extra}.model`.
+
+|	Model Name	|	Model Mode	|	Half Window Size	|	Window Size	|	Target	|	Extra	|
+| :---: | :---: | :---: | :---: | :---: | :---: |
+|	**Main Models**	|
+|	full_400_ythdf.model	|	Full Model	|	400	|	801	|	YTHDF1/2	|	-	|
+|	full_400_mature.model	|	Full Model	|	400	|	801	|	Mature transcripts	|	-	|
+|	full_400_full.model	|	Full Model	|	400	|	801	|	Full transcripts	|	-	|
+|	**Other Model Examples**	|
+|	seqonly_400_mature.model	|	Sequence Features Only Model	|	400	|	801	|	Mature transcripts	|	-	|
+|	genomeonly_400_mature.model	|	Genome Features Only Model	|	400	|	801	|	Mature transcripts	|	-	|
+|	full_100_mature.model	|	Full Model	|	100	|	201	|	Mature transcripts	|	-	|
+|	full_600_mature.model	|	Full Model	|	600	|	1201	|	Mature transcripts	|	-	|
+|	full_400_mature_for_time.model	|	Full Model	|	400	|	801	|	Mature transcripts	|	For training time estimation	|
+|	**Single Model Examples**	|
+|	full_400_a549_single.model	|	Full Model	|	400	|	801	|	A549	|	deepSRAMP$_\mathrm{single}$	|
+|	full_400_a549_dp.model	|	-	|	*500*	|	*1001*	|	A549	|	DeepPromise	|
+|	full_400_a549_single_random.model	|	Full Model	|	*500*	|	*1001*	|	A549	|	Selecting random transcript for training instead of max length trascript 	|
+
+
 ## Usage
 
 
@@ -40,7 +64,6 @@ The reproduction of figures in the paper can be found in `ipynb` files.
 - [Figure 1](fig1.ipynb)
 - [Figure 2](fig2.ipynb)
 - [Figure 3](fig3.ipynb)
-- [Figure 4](fig4.ipynb)
 
 ## Performance
 
