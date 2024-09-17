@@ -55,13 +55,13 @@ def test_loop(dataloader, model, device, loss_fn):
     test_loss /= num_batches
     fpr, tpr, throc = roc_curve(ys, preds)
     aucc = auc(fpr, tpr)
-    reca, prec, thprc = precision_recall_curve(ys, preds)
-    auprcc = auc(prec, reca)
+    prec, reca, thprc = precision_recall_curve(ys, preds)
+    auprcc = auc(reca, prec)
     mcc = matthews_corrcoef(ys, torch.tensor(preds) > 0.5)
     report = classification_report(ys, torch.tensor(preds) > 0.5, output_dict=True)
     
     print(f"[Test] ACC: {(100*report['accuracy']):>0.1f}%, Loss: {test_loss:>8f}, AUROC: {aucc:>.4f}, AUPRC: {auprcc:>.4f}, Size: {len(ys)}, Ratio: {(sum(ys)/len(ys)):.5f}")
-    return test_loss, aucc, auprcc, fpr, tpr, throc, reca, prec, thprc, mcc, report
+    return test_loss, aucc, auprcc, fpr, tpr, throc, prec, reca, thprc, mcc, report
 
 def train(model, loss_fn, optimizer, scheduler, train_dl, test_dl, epochs=15, device='cpu', ei=[0, 1]):
     for t in range(epochs):
@@ -110,13 +110,13 @@ def nano_test_loop(dataloader, model, device, loss_fn):
     # correct /= size
     fpr, tpr, throc = roc_curve(ys, preds)
     aucc = auc(fpr, tpr)
-    recall, prec, thprc = precision_recall_curve(ys, preds)
-    auprcc = auc(prec, recall)
+    prec, recall, thprc = precision_recall_curve(ys, preds)
+    auprcc = auc(recall, prec)
     acc = accuracy_score(ys, torch.tensor(preds) > 0.5)
     rs = recall_score(ys, torch.tensor(preds) > 0.5)
     ps = precision_score(ys, torch.tensor(preds) > 0.5)
     print(f"[Test] ACC: {(100*acc):>0.1f}%, Loss: {test_loss:>8f}, AUROC: {aucc:>.4f}, AUPRC: {auprcc:>.4f}, Recall: {rs:>.4f}, Precision: {ps:>.4f}, Size: {len(ys)}")
-    return correct, test_loss, aucc, auprcc, fpr, tpr, throc, recall, prec, thprc, preds, ys
+    return correct, test_loss, aucc, auprcc, fpr, tpr, throc, prec, recall, thprc, preds, ys
 
 def nano_pred_loop(dataloader, model, device='cpu'):
     preds = []
@@ -155,10 +155,10 @@ def dp_test_loop(dataloader, model, device, loss_fn):
     test_loss /= num_batches
     fpr, tpr, throc = roc_curve(ys, preds)
     aucc = auc(fpr, tpr)
-    reca, prec, thprc = precision_recall_curve(ys, preds)
-    auprcc = auc(prec, reca)
+    prec, reca, thprc = precision_recall_curve(ys, preds)
+    auprcc = auc(reca, prec)
     mcc = matthews_corrcoef(ys, torch.tensor(preds) > 0.5)
     report = classification_report(ys, torch.tensor(preds) > 0.5, output_dict=True)
     
     print(f"[Test] ACC: {(100*report['accuracy']):>0.1f}%, Loss: {test_loss:>8f}, AUROC: {aucc:>.4f}, AUPRC: {auprcc:>.4f}, Size: {len(ys)}, Ratio: {(sum(ys)/len(ys)):.5f}")
-    return test_loss, aucc, auprcc, fpr, tpr, throc, reca, prec, thprc, mcc, report
+    return test_loss, aucc, auprcc, fpr, tpr, throc, prec, reca, thprc, mcc, report

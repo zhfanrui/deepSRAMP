@@ -5,6 +5,7 @@
 data/*.gz
 whistle/
 ablation/
+blast/
 *.ipynb_checkpoints/
 *__pycache__/
 dist/
@@ -12,3 +13,6 @@ build/
 deepsramp.egg-info/
 
 test_res
+fig4.ipynb
+fig4b.ipynb
+pred.ipynb
