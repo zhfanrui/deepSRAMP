@@ -87,7 +87,7 @@ Model names follow the rule of `{mode}_{half_window_size}_{target}_{extra}.model
 |	full_600_mature.model	|	Full Model	|	600	|	1201	|	Mature transcripts	|	-	|
 |	full_400_mature_for_time.model	|	Full Model	|	400	|	801	|	Mature transcripts	|	For training time estimation	|
 |	**Single Model Examples**	|
-|	full_400_a549_single.model	|	Full Model	|	400	|	801	|	A549	|	deepSRAMP$_\mathrm{single}$	|
+|	full_400_a549_single.model	|	Full Model	|	400	|	801	|	A549	|	deepSRAMP$_{single}$	|
 |	full_400_a549_dp.model	|	-	|	*500*	|	*1001*	|	A549	|	DeepPromise	|
 |	full_400_a549_single_random.model	|	Full Model	|	*500*	|	*1001*	|	A549	|	Selecting random transcript for training instead of max length trascript 	|
 
@@ -119,7 +119,4 @@ The reproduction of figures in the paper can be found in `ipynb` files.
 ![](fig/atlas2_human_prc.svg)
 
 
-
-```sh
-rsync -av --exclude-from ../../deepsramp/exclude_file.txt ../../deepsramp/ .
-```
+<!-- rsync -av --exclude-from ../../deepsramp/exclude_file.txt ../../deepsramp/ . -->

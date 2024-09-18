@@ -49,7 +49,7 @@ def blast(fa, name, db, blast_path):
     
     refsdf = sdf.loc[ref].copy()
     for i in ['splice', 'cds']:
-        refsdf[i] = set(d.get(i) for i in refsdf.splice)
+        refsdf[i] = set(d.get(i) for i in refsdf[i])
     refsdf['length'] = d.get(refsdf['length'])
     refsdf['refseq'] = refseq
     refsdf['seq'] = queseq
@@ -93,7 +93,7 @@ def inference(seqs, blast_path='blast/', db='hg38_mature', model_path='model/ful
             
             device = "cuda" if torch.cuda.is_available() else "cpu"
             model = MultiSRAMP().to(device)
-            model.load_state_dict(torch.load(model_path, weights_only=True))
+            model.load_state_dict(torch.load(model_path, weights_only=True, map_location='cpu'))
             preds, ys = pred_loop(evaldl, model, device=device)
             evaldf = evaldf[evaldf.trans.str.contains('to')].set_index('grp').loc[grpidx]
             evaldf['pred'] = preds
