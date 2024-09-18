@@ -1,6 +1,8 @@
 # deepSRAMP
 
-SRAMP (http://www.cuilab.cn/sramp) is a popular mammalian m6A site predictor we previously developed (Nucleic Acids Res 2016). SRAMP has been totally cited by more than 570 papers (google scholar, 4-16, 2024) and represents the mostly used algorithm in this field. A large number of m6A sites were identified by the helps of SRAMP. After ~8 years after its development, Now we released deepSRAMP, which is designed based on a combined framework of transformer neural network and recurrent neural network by fusing the sequence and genomic position features. The results showed that SRAMP2 greatly outperforms its predecessor SRAMP with 14.2 increase of AUC and 26.8 increase of AUPRC, and greatly outperforms other state-of-the-art m6A predictors (WHISTLE and DeepPromise) with 15.0% and 17.2 increase of AUC and 38.7% and 41.2% increase of AUPRC, respectively.
+[SRAMP](http://www.cuilab.cn/sramp) is a popular mammalian m6A site predictor we previously developed ([Nucleic Acids Res 2016](https://pubmed.ncbi.nlm.nih.gov/26896799/)). SRAMP has been totally cited by more than 570 papers (Google Scholar, 4-16, 2024) and represents the mostly used algorithm in this field. A large number of m6A sites were identified by the helps of SRAMP. 
+
+After ~8 years after its development, Now we released [deepSRAMP (www.cuilab.cn/deepsramp)](http://www.cuilab.cn/deepsramp) , which is designed based on a combined framework of transformer neural network and recurrent neural network by fusing the sequence and genomic position features. The results showed that SRAMP2 greatly outperforms its predecessor SRAMP with 15.0% increase of AUROC and 30.9% increase of AUPRC, and greatly outperforms other state-of-the-art m6A predictors (WHISTLE and DeepPromise) with average 16.1% and 18.3% increase of AUC and 43.9% and 46.4% increase of AUPRC, respectively.
 
 ![](fig/fig1a.png)
 
@@ -18,36 +20,45 @@ SRAMP (http://www.cuilab.cn/sramp) is a popular mammalian m6A site predictor we 
 
 ## Installation
 
-1. Install `conda` and create a virtual enviroument named `sramp` with `python` installed;
+1. Install `conda` and create a virtual enviroument named `sramp` with `python` installed.
 ```sh
 conda create -y -n sramp python 
 conda activate sramp
 ```
-2. Clone this repo;
+2. Clone this repo.
 ```sh
 git clone https://github.com/zhfanrui/deepSRAMP.git
 ```
-3. Install this package and dependencies;
+3. Install this package and dependencies.
 ```sh
 cd deepSRAMP
 pip install .
 ```
 
-### Inference Setup
+## Usage
+### Inference
 
-1. Download `BLAST` and `Muscle`;
+1. Download `BLAST` and `Muscle`.
 ```sh
 sh setup_inference.sh
 ```
-2. 
-3. 
+2. Prepare your query fasta and run
+```sh
+deepsramp predict \
+--fasta /path/to/fasta.fa \
+--db /path/to/database/hg38_mature \
+--blast /path/to/blast/bin \
+--model /path/to/model/full_400_mature.model \
+--out ./result.csv
+```
 
 
-### Training Setup
+### Train
 1. Download `GTF` and `FASTA` files for training;
 ```sh
 sh download.sh
 ```
+2. See [tutorials](#Tutorials) for training.
 
 
 <!-- 2. Install `deepSRAMP` through
@@ -57,17 +68,6 @@ pip install deepsramp
 
 <!-- , especially for `data` and `model` folder; -->
 
-
-## Usage
-
-```sh
-deepsramp predict \
---fasta /path/to/fasta.fa \
---db /path/to/database/hg38_mature \
---blast /path/to/blast/bin \
---model /path/to/model/full_400_mature.model \
---out ./result.csv
-```
 
 
 ## Pretrained Models
@@ -101,7 +101,7 @@ The reproduction of figures in the paper can be found in `ipynb` files.
 
 ## Citation
 
-paper
+    [paper]
 
 
 

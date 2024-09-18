@@ -21,16 +21,16 @@ def parse_afa(f, ref):
 def blast(fa, name, db, blast_path):
     uid = f'{uuid.uuid1()}'
     sdf = utils.load(f'{db}.df')
-    # echop = subprocess.Popen(['echo', '-e', fa], stdout=subprocess.PIPE)
+    echop = subprocess.Popen(['echo', '-e', fa], stdout=subprocess.PIPE)
     dbpath = f'{db}'
-    # res = subprocess.check_output(['blast/bin/blastn', '-db', dbpath, '-max_target_seqs', '5', '-num_threads', '35', '-outfmt', '6 qacc sacc evalue length pident qstart qend sstart send btop'], stdin=echop.stdout)
-    # if not res: return pd.DataFrame()
-    res = b'''NM_000546.6	ENST00000620739	0.0	2512	100.000	1	2512	49	2560	2512
-NM_000546.6	ENST00000269305	0.0	2512	100.000	1	2512	49	2560	2512
-NM_000546.6	ENST00000619485	0.0	2509	99.880	4	2512	1	2506	110G-C-A-2396
-NM_000546.6	ENST00000445888	0.0	2509	99.880	4	2512	1	2506	110G-C-A-2396
-NM_000546.6	ENST00000610292	0.0	2296	100.000	217	2512	325	2620	2296
-NM_000546.6	ENST00000610292	1.68e-104	207	100.000	10	216	1	207	207'''
+    res = subprocess.check_output([f'{blast_path}/blastn', '-db', dbpath, '-max_target_seqs', '5', '-num_threads', '35', '-outfmt', '6 qacc sacc evalue length pident qstart qend sstart send btop'], stdin=echop.stdout)
+    if not res: return pd.DataFrame()
+#     res = b'''NM_000546.6	ENST00000620739	0.0	2512	100.000	1	2512	49	2560	2512
+# NM_000546.6	ENST00000269305	0.0	2512	100.000	1	2512	49	2560	2512
+# NM_000546.6	ENST00000619485	0.0	2509	99.880	4	2512	1	2506	110G-C-A-2396
+# NM_000546.6	ENST00000445888	0.0	2509	99.880	4	2512	1	2506	110G-C-A-2396
+# NM_000546.6	ENST00000610292	0.0	2296	100.000	217	2512	325	2620	2296
+# NM_000546.6	ENST00000610292	1.68e-104	207	100.000	10	216	1	207	207'''
     rdf = pd.read_csv(StringIO(res.decode()), comment='#', sep='\t', header=None)
     
     ref = rdf[1][0]
