@@ -39,15 +39,12 @@ def dffea_multi(df, pos_label='m6a_pos', neg_label='m6a_neg'):
     return list(zip(*x))
 
 def task_multi(i, k, pos_label, neg_label):
-    # res = []
-    # for enst, i in tqdm(df.iterrows(), total=df.shape[0]):
-        
     return (
         genseq(i['seq'], k, utils.half_length),
         genemb(i['seq'], k, utils.half_length, i, pos_label),
     )
 
-def df2ds_multi(traindf, agg=True):
+def df2ds_multi(traindf, agg=True, return_grp=False):
     tdf = traindf[['trans', 'pos', 'label']].groupby(['label', 'trans']).agg(set)
     try:
         pos = tdf.loc[1]
@@ -66,7 +63,10 @@ def df2ds_multi(traindf, agg=True):
     traindf['x1'], traindf['x2'] = dffea_multi(traindf)
     if agg:
         traindf = traindf[['x1', 'x2', 'grp', 'label']].groupby('grp').agg(list)
-        return MultiDS(traindf)
+        if return_grp:
+            return MultiDS(traindf), traindf.index
+        else:
+            return MultiDS(traindf1)
     else: 
         traindf['label'] = traindf['label'].apply(lambda x: [x])
         return DS(traindf[['x1', 'x2', 'label']].to_numpy().tolist())

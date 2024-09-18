@@ -71,18 +71,18 @@ def train(model, loss_fn, optimizer, scheduler, train_dl, test_dl, epochs=15, de
     # return test_loop(test_dl, model, device, loss_fn, ei)
 
 def pred_loop(dataloader, model, device='cpu'):
+    num_batches = len(dataloader)
     preds = []
     ys = []
     with torch.no_grad():
-        for X, y in tqdm(dataloader):
+        for X, y in tqdm(dataloader, total=num_batches):
             X = [x.to(device) for x in X]
             y = y.to(device)
             model.eval()
             pred = model(*X)
-            preds += (torch.sigmoid(pred[:, half_length, -1]).tolist())
-            ys += (y[:, half_length, -1].tolist())
+            preds += (torch.sigmoid(pred[:, -1]).tolist())
+            ys += (y[:, -1].tolist())
     return preds, ys
-
 
 def nano_test_loop(dataloader, model, device, loss_fn):
     # size = len(dataloader.dataset)

@@ -1,6 +1,15 @@
 import os
 from . import *
 
+
+
+
+
+
+
+
+
+
 def preprocess_data(args):
     print('preprocess')
     gtf = read_gtf(args.gtf)
@@ -16,7 +25,7 @@ def preprocess_data(args):
     res = read_m6a_beds(files, names, ndf)
     res = get_m6a_neg(res)
     res = res.dropna(subset=['m6a_pos'])
-    save(res, args.out)
+    utils.save(res, args.out)
 
 def train_sramp(args):
     pass

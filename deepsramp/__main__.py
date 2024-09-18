@@ -1,61 +1,58 @@
-from scripts import *
+# from scripts import *
 import argparse
+from deepsramp.inference import inference_warpper
 
 parse_dict = {
-    'preprocess': {
-        'help': 'prepropcess the data',
-        'func': preprocess_data,
-        '--gtf': 'the path of GTF file',
-        '--fasta': 'the path of the chromosome-level FASTA file that accompanies the GTF file',
-        '--mode': ['full', 'mature', 'select the mode of preprocessing'],
-        '--m6a_bed_dir': 'the directory containing the BED files that record the m6a sites',
-        '--out': 'the path of preprocessed file',
-    }, 
-    'train': {
-        'help': 'train the model',
-        'func': train_sramp,
-        '--data': 'the path of preprocessed data',
-        '--out': 'the path of trained model',
-    }, 
-    'pred': {
-        'help': 'predict the m6a sites',
-        'func': predict_sramp,
+    # 'preprocess': {
+    #     'help': 'prepropcess the data',
+    #     'func': preprocess_data,
+    #     '--gtf': 'the path of GTF file',
+    #     '--fasta': 'the path of the chromosome-level FASTA file that accompanies the GTF file',
+    #     '--mode': ['full', 'mature', 'select the mode of preprocessing'],
+    #     '--m6a_bed_dir': 'the directory containing the BED files that record the m6a sites',
+    #     '--out': 'the path of preprocessed file',
+    # }, 
+    # 'train': {
+    #     'help': 'train the model',
+    #     'func': train_sramp,
+    #     '--data': 'the path of preprocessed data',
+    #     '--out': 'the path of trained model',
+    # }, 
+    'predict': {
+        'help': 'predict the m6a sites from fasta',
+        'func': inference_warpper,
+        '--fasta': 'the path of fasta file',
+        '--db': 'the dir of blast database',
+        '--blast': 'the dir of blast bin folder',
         '--model': 'the path of trained model',
-        '--out': 'the path of predicted results',
+        '--out': 'the path of predicted results file',
     }, 
-    'nanopreprocess': {
-        'help': 'prepropcess the nanopore data',
-        'func': preprocess_nano_data,
-        '--file': 'the output file of nanopolish',
-        '--out': 'the path of preprocessed file',
-    }, 
-    'nanotrain': {
-        'help': 'train the nanopore model',
-        'func': train_nano_sramp,
-        '--data': 'the path of preprocessed data',
-        '--out': 'the path of trained model',
-    }, 
-    'nanopred': {
-        'help': 'predict the m6a sites using nanopore data',
-        'func': predict_nano_sramp,
-    },
+    # 'nanopreprocess': {
+    #     'help': 'prepropcess the nanopore data',
+    #     'func': preprocess_nano_data,
+    #     '--file': 'the output file of nanopolish',
+    #     '--out': 'the path of preprocessed file',
+    # }, 
+    # 'nanotrain': {
+    #     'help': 'train the nanopore model',
+    #     'func': train_nano_sramp,
+    #     '--data': 'the path of preprocessed data',
+    #     '--out': 'the path of trained model',
+    # }, 
+    # 'nanopred': {
+    #     'help': 'predict the m6a sites using nanopore data',
+    #     'func': predict_nano_sramp,
+    # },
 }
 
 WELCOME = '''
- .oooooo..o ooooooooo.         .o.       ooo        ooooo ooooooooo.        .oooo.         .oooo.   
-d8P'    `Y8 `888   `Y88.      .888.      `88.       .888' `888   `Y88.    .dP""Y88b       d8P'`Y8b  
-Y88bo.       888   .d88'     .8"888.      888b     d'888   888   .d88'          ]8P'     888    888 
- `"Y8888o.   888ooo88P'     .8' `888.     8 Y88. .P  888   888ooo88P'         .d8P'      888    888 
-     `"Y88b  888`88b.      .88ooo8888.    8  `888'   888   888              .dP'         888    888 
-oo     .d8P  888  `88b.   .8'     `888.   8    Y     888   888            .oP     .o .o. `88b  d88' 
-8""88888P'  o888o  o888o o88o     o8888o o8o        o888o o888o           8888888888 Y8P  `Y8bd8P'  
-
-----------------------------------------------------------------------------------------------------
+Welcome to deepSRAMP!
+----------------------
 '''
 
 def main():
-    print(WELCOME)
-    parser = argparse.ArgumentParser(description='Welcome to SRAMP2!')
+    # print(WELCOME)
+    parser = argparse.ArgumentParser(description='Welcome to deepSRAMP!')
     subparsers = parser.add_subparsers(required=True)
     
     for i in parse_dict:

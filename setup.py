@@ -13,6 +13,11 @@ setup(
         'matplotlib',
         'seaborn',
     ],
+    entry_points={
+        'console_scripts': [
+            'deepsramp = deepsramp:main'
+        ]
+    },
     author='Rui Fan',
     author_email='r.fan@bjmu.edu.cn',
     description='Mammalian m6A site predictor',
