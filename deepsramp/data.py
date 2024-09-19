@@ -66,7 +66,7 @@ def df2ds_multi(traindf, agg=True, return_grp=False):
         if return_grp:
             return MultiDS(traindf), traindf.index
         else:
-            return MultiDS(traindf1)
+            return MultiDS(traindf)
     else: 
         traindf['label'] = traindf['label'].apply(lambda x: [x])
         return DS(traindf[['x1', 'x2', 'label']].to_numpy().tolist())

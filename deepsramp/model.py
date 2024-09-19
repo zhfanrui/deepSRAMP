@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+import random
 from . import utils
 
 
@@ -76,6 +77,11 @@ class SRAMP(nn.Module):
         me = self.conv_model(x)
         
         x = torch.cat([te, me], axis=-1)
+
+        # if self.training and random.random() < 0.5:
+        #     emb[:, :, -3:] = 0
+        # if not self.training:
+        #     emb[:, :, -3:] = 0
         
         if self.mode == 'seqonly': emb = emb.zero_()
         elif self.mode == 'genomeonly': x = x.zero_()
@@ -116,6 +122,11 @@ class MultiSRAMP(nn.Module):
 
         # return x
 
+        # random mute setting
+        if self.training and random.random() < 0.5:
+            emb[:, :, :, -3:] = 0
+        # if not self.training:
+        #     emb[:, :, :, -3:] = 0
         
         res = []
         for i in range(utils.max_t):

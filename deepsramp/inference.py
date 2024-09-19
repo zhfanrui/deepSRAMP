@@ -46,35 +46,66 @@ def blast(fa, name, db, blast_path):
     
     subprocess.run(['rm', '-f', input_file])
     subprocess.run(['rm', '-f', output_file])
-    
+
     refsdf = sdf.loc[ref].copy()
-    for i in ['splice', 'cds']:
-        refsdf[i] = set(d.get(i) for i in refsdf[i])
+    refsdf['pos'] = list(get_drach(refsdf.seq, DRACH_PAT))
+    refsdf['posgrp'] = [(get_genome_pos(i, refsdf)) for i in refsdf['pos']]
+    for i in ['splice', 'cds', 'pos']:
+        refsdf[i] = list(d.get(i) for i in refsdf[i])
     refsdf['length'] = d.get(refsdf['length'])
     refsdf['refseq'] = refseq
     refsdf['seq'] = queseq
     refsdf.name = f'{name} to {ref}'
-    refsdf['pos'] = get_drach(refsdf.seq, DRACH_PAT)
-
+    refsdf['quepos'] = list(get_drach(refsdf.seq, DRACH_PAT))
+    
     evaldf = []
-    for i in refsdf.pos:
-        genome_pos = get_genome_pos(i, refsdf)
-        gene_trans = sdf[sdf.id == refsdf.id]
-        grp = refsdf[0] + refsdf[6] + str(genome_pos)
-        label = (grp in utils.notnaor(refsdf.grp, [])) * 1
-        evaldf += [(refsdf.name, i, grp, label)]
+    for i, genome_pos in zip(refsdf.pos, refsdf.posgrp):
+        if i in refsdf.quepos:
+            grp = refsdf[0] + refsdf[6] + str(genome_pos)
+            label = (grp in utils.notnaor(refsdf.grp, [])) * 1
+            evaldf += [(refsdf.name, i, grp, label)]
+    
+            gene_trans = sdf[sdf.id == refsdf.id]
+            for j in gene_trans.itertuples():
+                trans_pos = get_mature_pos(genome_pos, j)
+                if trans_pos != -1:
+                    evaldf += [(j.Index, trans_pos, grp, label)]
         
-        for j in gene_trans.itertuples():
-            trans_pos = get_mature_pos(genome_pos, j)
-            if trans_pos != -1:
-                evaldf += [(j.Index, trans_pos, grp, label)]
+    for i in refsdf.quepos:
+        if i not in refsdf.pos:
+            evaldf += [(refsdf.name, i, f'new_{i}', 0)]
     
     evaldf = pd.DataFrame(evaldf, columns=['trans', 'pos', 'grp', 'label'])
     evaldf = evaldf.merge(pd.concat([sdf, pd.DataFrame(refsdf).T])[['cds', 'splice', 'length', 'min', 'max', 'seq', 'refseq']], left_on='trans', right_index=True, how='left')
     
+    # refsdf = sdf.loc[ref].copy()
+    # for i in ['splice', 'cds']:
+    #     refsdf[i] = set(d.get(i) for i in refsdf[i])
+    # refsdf['length'] = d.get(refsdf['length'])
+    # refsdf['refseq'] = refseq
+    # refsdf['seq'] = queseq
+    # refsdf.name = f'{name} to {ref}'
+    # refsdf['pos'] = get_drach(refsdf.seq, DRACH_PAT)
+
+    # evaldf = []
+    # for i in refsdf.pos:
+    #     genome_pos = get_genome_pos(i, refsdf)
+    #     gene_trans = sdf[sdf.id == refsdf.id]
+    #     grp = refsdf[0] + refsdf[6] + str(genome_pos)
+    #     label = (grp in utils.notnaor(refsdf.grp, [])) * 1
+    #     evaldf += [(refsdf.name, i, grp, label)]
+        
+    #     for j in gene_trans.itertuples():
+    #         trans_pos = get_mature_pos(genome_pos, j)
+    #         if trans_pos != -1:
+    #             evaldf += [(j.Index, trans_pos, grp, label)]
+    
+    # evaldf = pd.DataFrame(evaldf, columns=['trans', 'pos', 'grp', 'label'])
+    # evaldf = evaldf.merge(pd.concat([sdf, pd.DataFrame(refsdf).T])[['cds', 'splice', 'length', 'min', 'max', 'seq', 'refseq']], left_on='trans', right_index=True, how='left')
+    
     return evaldf
 
-def inference(seqs, blast_path='blast/', db='hg38_mature', model_path='model/full_400_mature.model', lsep='\n'):
+def inference(seqs, blast_path='blast/bin', db='blast/db/hg38_mature', model_path='model/full_400_mature.model', lsep='\n'):
     seqs = seqs.split('>')
     evaldfs = []
     names = []
