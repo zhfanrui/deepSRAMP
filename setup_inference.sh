@@ -9,7 +9,7 @@ mv muscle-linux-x86.v5.2 bin/muscle
 chmod +x bin/muscle
 rm -rf ncbi-blast-2.16.0+/
 
-wget -c https://github.com/zhfanrui/deepSRAMP/releases/download/Database/hg38_mature.tgz
-wget -c https://github.com/zhfanrui/deepSRAMP/releases/download/Database/mm39_mature.tgz
-tar zxvf hg38_mature.tgz
-tar zxvf mm39_mature.tgz
+wget -c https://github.com/zhfanrui/deepSRAMP/releases/download/Database/db_hg38_mature.tgz
+wget -c https://github.com/zhfanrui/deepSRAMP/releases/download/Database/db_mm39_mature.tgz
+tar zxvf db_hg38_mature.tgz
+tar zxvf db_mm39_mature.tgz
